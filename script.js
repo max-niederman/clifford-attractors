@@ -1,5 +1,5 @@
-const NUM_ITERATIONS = 30;
-const NUM_POINTS_PER_PIXEL = 4;
+const N_ITERATIONS = 35;
+const NUM_POINTS_PER_PIXEL = 3;
 
 main();
 
@@ -21,8 +21,8 @@ function main() {
         uniform float b;
         uniform float c;
         uniform float d;
+        uniform vec2 scale;
         uniform int nIterations;
-        uniform float scale;
         uniform int nParticles;
 
         out vec3 color;
@@ -35,8 +35,8 @@ function main() {
         vec3 palette(float t) {
             const vec3 a = vec3(0.5, 0.5, 0.5);
             const vec3 b = vec3(0.5, 0.5, 0.5);
-            const vec3 c = vec3(1.0, 1.0, 1.0);
-            const vec3 d = vec3(0.0, 0.33, 0.67);
+            const vec3 c = vec3(2.0, 1.0, 0.0);
+            const vec3 d = vec3(0.5, 0.20, 0.6);
 
             return a + b * cos(TAU * (c * t + d));
         }
@@ -75,8 +75,8 @@ function main() {
     const bLocation = gl.getUniformLocation(program, "b");
     const cLocation = gl.getUniformLocation(program, "c");
     const dLocation = gl.getUniformLocation(program, "d");
-    const nIterationsLocation = gl.getUniformLocation(program, "nIterations");
     const scaleLocation = gl.getUniformLocation(program, "scale");
+    const nIterationsLocation = gl.getUniformLocation(program, "nIterations");
     const nParticlesLocation = gl.getUniformLocation(program, "nParticles");
 
     gl.enable(gl.BLEND);
@@ -95,12 +95,12 @@ function main() {
 
         gl.useProgram(program);
 
-        gl.uniform1f(aLocation, -1.4 + 0.1 * Math.sin(now * 0.001));
-        gl.uniform1f(bLocation, 1.6 + 0.3 * Math.sin(now * 0.001 * 0.25));
-        gl.uniform1f(cLocation, 1.0);
-        gl.uniform1f(dLocation, 0.7 + 0.2 * Math.sin(now * 0.001 * Math.PI));
-        gl.uniform1i(nIterationsLocation, NUM_ITERATIONS);
-        gl.uniform1f(scaleLocation, 0.4);
+        gl.uniform1f(aLocation, -1.8 + 0.1 * Math.sin(now * 0.001));
+        gl.uniform1f(bLocation, 1.2 + 0.3 * Math.sin(now * 0.001 * 0.3));
+        gl.uniform1f(cLocation, -1.6);
+        gl.uniform1f(dLocation, -0.8);
+        gl.uniform2fv(scaleLocation, [0.8 * canvas.height / canvas.width, 0.8]);
+        gl.uniform1i(nIterationsLocation, N_ITERATIONS);
         gl.uniform1i(nParticlesLocation, NUM_POINTS_PER_PIXEL * canvas.width * canvas.height);
 
         gl.drawArrays(gl.POINTS, 0, NUM_POINTS_PER_PIXEL * canvas.width * canvas.height);
